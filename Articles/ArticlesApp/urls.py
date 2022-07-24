@@ -12,7 +12,6 @@ urlpatterns = [
     path("add_comment/<article_id>/", views.add_comment, name="add_comment"),
     path("vie_comment/<article_id>/", views.view_comment, name="view_comment"),
     path("delete_comment/<comment_id>/", views.delete_comment, name="delete_comment"),
-
     path('add_article/', views.add_article, name='add_article'),
     path('all_articles/', views.all_articles, name='all_articles'),
     path('update_article/<article_id>/', views.update_article, name='update_article'),
