@@ -103,7 +103,7 @@ def search_for_article(request: Request):
         article = Article.objects.all()
         title = request.GET.get('title', None)
         if title is not None:
-            search_s = Article.objects.filter(title=title)
+            search_s = Article.objects.filter(title__contains=title.lower())
             search_article = {
                 "Article": ArticleSerializer(instance=search_s, many=True).data
             }
