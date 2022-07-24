@@ -16,10 +16,10 @@ from .serializers import *
 def add_comment(request: Request, article_id):
     """this endpoint is to add a comment"""
     print(request.user)
-    # if not request.user.is_authenticated or not request.user.has_perm('consultation.add_consultation_request'):
-    #     return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+    if not request.user.is_authenticated or not request.user.has_perm('articles.add_comment'):
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
 
-    # request.data.update(user=request.user.id)
+    request.data.update(user=request.user.id)
 
     comment = Comment_serializer(data=request.data)
     if comment.is_valid():
