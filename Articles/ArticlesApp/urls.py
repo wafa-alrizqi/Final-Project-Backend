@@ -11,10 +11,10 @@ urlpatterns = [
     path("search/", views.search_for_article, name="search_for_article"),
 
     path("add_comment/<article_id>/", views.add_comment, name="add_comment"),
-    path("view_comment", views.view_comment, name="view_comment"),
+    path("vie_comment/<article_id>/", views.view_comment, name="view_comment"),
     path("delete_comment/<comment_id>/", views.delete_comment, name="delete_comment"),
 
-    path('article/', views.add_article, name='article'),
+    path('add_article/', views.add_article, name='add_article'),
     path('all_articles/', views.all_articles, name='all_articles'),
     path('update_article/<article_id>/', views.update_article, name='update_article'),
     path('delete_article/<article_id>/', views.delete_article, name='delete_article'),
