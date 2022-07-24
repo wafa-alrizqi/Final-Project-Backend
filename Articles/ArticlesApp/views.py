@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -7,10 +6,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import models
-from .serializer import *
+from .serializers import *
+
+
 # Create your views her
 
-#comment views:
+# comment views:
 
 
 @api_view(['POST'])
@@ -38,11 +39,7 @@ def add_comment(request: Request, article_id):
         return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
 @api_view(['GET'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def view_comment(request: Request):
     """this endpoint is to view comments"""
     comment = Comment.objects.all()
@@ -55,3 +52,11 @@ def view_comment(request: Request):
     return Response(dataResponse)
 
 
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_comment(request: Request, comment_id):
+    """this endpoint is for deleting a comment"""
+    con = Comment.objects.get(id=comment_id)
+    con.delete()
+    return Response({"msg": "Deleted Successfully"})
