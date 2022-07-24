@@ -20,7 +20,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BookMarksSerializer(serializers.ModelSerializer):
+class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookMarks
         fields = '__all__'

@@ -38,7 +38,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class BookMarks(models.Model):
+class Bookmark(models.Model):
     ''' This class for BookMarks attributes '''
 
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
