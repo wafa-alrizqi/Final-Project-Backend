@@ -9,8 +9,6 @@ from . import models
 from .serializers import *
 
 
-
-
 # comment views:
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
