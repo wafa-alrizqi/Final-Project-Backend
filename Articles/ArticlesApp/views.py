@@ -12,7 +12,7 @@ from .serializers import *
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def add_comment(request: Request, article_id):
+def add_comment(request: Request):
     """this endpoint is to add a comment on an article"""
 
     print(request.user)
@@ -36,15 +36,19 @@ def add_comment(request: Request, article_id):
 
 
 @api_view(['GET'])
-def view_comment(request: Request):
+def view_comment(request: Request, article_id):
     """this endpoint is to view comments"""
-    comment = Comment.objects.all()
-
+    # comment = Comment.objects.all()
+    # dataResponse = {
+    #     "msg": "List of Comments:",
+    #     "comment": Comment_serializer(instance=comment, many=True).data,
+    # }
+    # return Response(dataResponse)
+    comments = Comment.objects.filter(article=article_id)
     dataResponse = {
-        "msg": "List of Comments:",
-        "comment": Comment_serializer(instance=comment, many=True).data,
+        'msg application': 'List of Comments in each Article',
+        'application': Comment_serializer(instance=comments, many=True).data
     }
-
     return Response(dataResponse)
 
 
@@ -58,7 +62,7 @@ def delete_comment(request: Request, comment_id):
 
     comment = Comment.objects.get(id=comment_id)
     # Check if the comment by the same user who wrote it
-    if comment.users.id == request.user.id:
+    if comment.user.id == request.user.id:
         comment.delete()
         return Response({"msg": "Deleted Comment Successfully"})
     else:
@@ -94,6 +98,7 @@ def list_bookmark(request: Request):
         "Bookmark": BookmarkSerializer(instance=bookmark, many=True).data
     }
     return Response(responseData)
+
 
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
@@ -209,6 +214,7 @@ def top5_Article(request: Request):
     }
     return Response(dataResponse)
 
+
 @api_view(['GET'])
 def search_for_article (request: Request, article_title):
     """ This endpoint for searching article by title  """
@@ -221,3 +227,15 @@ def search_for_article (request: Request, article_title):
         return Response(dataResponse)
     else:
         return Response({"msg": "couldn't find the article"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def all_categories(request: Request):
+    """ This endpoint is for listing/viewing all articles """
+    category = Category.objects.all()
+    dataResponse = {
+        'msg': 'List of All Categories',
+        'Categories': CategorySerializer(instance=category, many=True).data
+    }
+    return Response(dataResponse)
+
