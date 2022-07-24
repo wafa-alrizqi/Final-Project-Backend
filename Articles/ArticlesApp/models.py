@@ -19,7 +19,7 @@ class Category(models.Model):
     name = models.CharField(choices=CategoryTopic.choices, max_length=30)
     image = models.URLField()
 
-    def str(self):
+    def __str__(self):
         return self.name
 
 

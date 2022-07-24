@@ -1,11 +1,9 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from . import models
 from .serializers import *
 
 
@@ -109,14 +107,14 @@ def delete_bookmark(request: Request, bookmark_id):
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 def add_article(request: Request):
-    ''' This endpoint is for adding an article if the user is a publisher'''
+    """ This endpoint is for adding an article if the user is a publisher"""
 
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed!'}, status=status.HTTP_401_UNAUTHORIZED)
-    # request.data["publisher"]=request.user.id
+
     else:
-        request.data["publisher"] = request.user.id
         article = ArticleSerializer(data=request.data)
+        request.data["publisher"] = request.user.id
         if article.is_valid():
             article.save()
             dataResponse = {
@@ -133,17 +131,18 @@ def add_article(request: Request):
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_article(request: Request, article_id):
-    ''' This endpoint is for updating an article '''
+    """ This endpoint is for updating an article """
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed'}, status=status.HTTP_401_UNAUTHORIZED)
 
     article = Article.objects.get(id=article_id)
-    if request.user.id == article.publisher:
+    if request.user.id == article.publisher.id:
         article_updated = ArticleSerializer(instance=article, data=request.data)
+        request.data["publisher"] = request.user.id
         if article_updated.is_valid():
             article_updated.save()
             responseData = {'msg': 'Article Updated Successfully'}
-            return Response(responseData)
+            return Response({'msg': 'Article Updated Successfully'}, status=status.HTTP_200_OK)
     else:
         return Response({'msg': 'User Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -151,20 +150,22 @@ def update_article(request: Request, article_id):
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
 def delete_article(request: Request, article_id):
-    ''' This endpoint is for deleting an article '''
+    """ This endpoint is for deleting an article """
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed'}, status=status.HTTP_401_UNAUTHORIZED)
     article = Article.objects.get(id=article_id)
-    if request.user.id == article.publisher:
+    if request.user.id == article.publisher.id:
         article.delete()
         return Response({'msg': 'Article Deleted Successfully'})
     else:
+        print(request.user.id)
+        print(article.publisher.id)
         return Response({'msg': 'Not Unauthorized User'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET'])
 def all_articles(request: Request):
-    ''' This endpoint is for listing/viewing all articles '''
+    """ This endpoint is for listing/viewing all articles """
     article = Article.objects.all()
     dataResponse = {
         'msg': 'List of All Articles',
@@ -175,9 +176,9 @@ def all_articles(request: Request):
 
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
-def posted_articles_per_publisher(request: Request, publisher_id):
-    ''' This endpoint is for viewing articles by a publisher '''
-    article = Article.objects.filter(publisher=publisher_id)
+def posted_articles_per_publisher(request: Request):
+    """ This endpoint is for viewing articles by a publisher """
+    article = Article.objects.filter(publisher=request.user.id)
     dataResponse = {
         'msg': 'List of All Articles',
         'Articles': ArticleSerializer(instance=article, many=True).data
@@ -188,7 +189,7 @@ def posted_articles_per_publisher(request: Request, publisher_id):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 def posted_articles_per_category(request: Request, category_id):
-    ''' This endpoint is for viewing articles by a category '''
+    """ This endpoint is for viewing articles by a category """
     article = Article.objects.filter(category=category_id)
     dataResponse = {
         'msg': 'List of All Articles in a Category',
