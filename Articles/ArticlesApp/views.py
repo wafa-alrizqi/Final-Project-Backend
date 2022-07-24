@@ -10,11 +10,13 @@ from .serializers import *
 
 
 # comment views:
+
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def add_comment(request: Request, article_id):
-    """this endpoint is to add a comment"""
+    """this endpoint is to add a comment on an article"""
+
     print(request.user)
     if not request.user.is_authenticated or not request.user.has_perm('articles.add_comment'):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -53,15 +55,23 @@ def view_comment(request: Request):
 @permission_classes([IsAuthenticated])
 def delete_comment(request: Request, comment_id):
     """this endpoint is for deleting a comment"""
-    con = Comment.objects.get(id=comment_id)
-    con.delete()
-    return Response({"msg": "Deleted Successfully"})
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    comment = Comment.objects.get(id=comment_id)
+    # Check if the comment by the same user who wrote it
+    if comment.users.id == request.user.id:
+        comment.delete()
+        return Response({"msg": "Deleted Comment Successfully"})
+    else:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_bookmark(request: Request):
-    """ This endpoint for adding comics for yor favorite  """
-    if not request.user.is_authenticated or not request.user.has_perm('ArticlesApp.add_bookmark'):
+    """ This endpoint for adding articles to the user's bookmark  """
+    if not request.user.is_authenticated:
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
 
     request.data["user"] = request.user.id
@@ -71,7 +81,7 @@ def add_bookmark(request: Request):
         return Response({"Bookmark": new_bookmark.data})
     else:
         print(new_bookmark.errors)
-        return Response("no", status=status.HTTP_400_BAD_REQUEST)
+        return Response("Couldn't add", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -90,7 +100,7 @@ def list_bookmark(request: Request):
 
 @permission_classes([IsAuthenticated])
 def delete_bookmark(request: Request, bookmark_id):
-    """ This endpoint for delete bookmark """
+    """ This endpoint for delete your bookmark """
     bookmark = Bookmark.objects.get(id=bookmark_id)
     bookmark.delete()
     return Response({"msg": "Deleted Successfully"})
@@ -99,9 +109,13 @@ def delete_bookmark(request: Request, bookmark_id):
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 def add_article(request: Request):
+    ''' This endpoint is for adding an article if the user is a publisher'''
+
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed!'}, status=status.HTTP_401_UNAUTHORIZED)
+    # request.data["publisher"]=request.user.id
     else:
+        request.data["publisher"] = request.user.id
         article = ArticleSerializer(data=request.data)
         if article.is_valid():
             article.save()
@@ -119,6 +133,7 @@ def add_article(request: Request):
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_article(request: Request, article_id):
+    ''' This endpoint is for updating an article '''
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -130,12 +145,13 @@ def update_article(request: Request, article_id):
             responseData = {'msg': 'Article Updated Successfully'}
             return Response(responseData)
     else:
-        return Response({'msg': 'Not Unauthorized User'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'msg': 'User Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
 def delete_article(request: Request, article_id):
+    ''' This endpoint is for deleting an article '''
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed'}, status=status.HTTP_401_UNAUTHORIZED)
     article = Article.objects.get(id=article_id)
@@ -148,6 +164,7 @@ def delete_article(request: Request, article_id):
 
 @api_view(['GET'])
 def all_articles(request: Request):
+    ''' This endpoint is for listing/viewing all articles '''
     article = Article.objects.all()
     dataResponse = {
         'msg': 'List of All Articles',
@@ -159,6 +176,7 @@ def all_articles(request: Request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 def posted_articles_per_publisher(request: Request, publisher_id):
+    ''' This endpoint is for viewing articles by a publisher '''
     article = Article.objects.filter(publisher=publisher_id)
     dataResponse = {
         'msg': 'List of All Articles',
@@ -166,6 +184,16 @@ def posted_articles_per_publisher(request: Request, publisher_id):
     }
     return Response(dataResponse)
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+def posted_articles_per_category(request: Request, category_id):
+    ''' This endpoint is for viewing articles by a category '''
+    article = Article.objects.filter(category=category_id)
+    dataResponse = {
+        'msg': 'List of All Articles in a Category',
+        'Articles': ArticleSerializer(instance=article, many=True).data
+    }
+    return Response(dataResponse)
 
 @api_view(['GET'])
 def search_for_article(request: Request):
