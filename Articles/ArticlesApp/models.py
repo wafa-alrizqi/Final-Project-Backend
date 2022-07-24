@@ -26,7 +26,7 @@ class Article(models.Model):
 
     title = models.CharField(max_length=128)
     image = models.URLField()
-    content = models.CharField()
+    content = models.CharField(max_length=5000)
     summary = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     refrence = models.URLField()
