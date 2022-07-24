@@ -191,4 +191,3 @@ def top5_Article(request: Request):
         "TOP_5": ArticleSerializer(instance=top, many=True).data
     }
     return Response(dataResponse)
-
