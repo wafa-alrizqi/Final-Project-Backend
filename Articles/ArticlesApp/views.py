@@ -1,9 +1,4 @@
 from django.shortcuts import render
-<<<<<<< HEAD
-
-# Create your views here
-
-=======
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -56,7 +51,6 @@ def delete_comment(request: Request, comment_id):
     con = Comment.objects.get(id=comment_id)
     con.delete()
     return Response({"msg": "Deleted Successfully"})
-
 
 
 @api_view(['POST'])
