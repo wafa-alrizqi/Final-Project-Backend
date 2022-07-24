@@ -1,11 +1,11 @@
 from django.contrib import admin
-
+from .models import *
 # Register your models here.
 from .models import Article, Comment, Category, Bookmark
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image', 'content', 'summary', 'created_at', 'refrence', 'likes', 'publisher', 'category')
+    list_display = ('title', 'image', 'content', 'summary', 'created_at', 'reference', 'likes', 'publisher', 'category')
 
 
 class CommentAdmin(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'image', 'publisher')
+    list_display = ('name', 'image')
 
 
 class BookmarkAdmin(admin.ModelAdmin):
