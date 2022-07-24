@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'Articles.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MyArticleDB',
+        'NAME': 'Articles',
         'USER': 'postgres',
-        'PASSWORD': '123456789',
+        'PASSWORD': '12345',
     }
 }
 # DATABASES = {
