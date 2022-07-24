@@ -1,1 +1,0 @@
-web: unicorn Articles.wsgi --log-file-
