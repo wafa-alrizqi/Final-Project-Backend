@@ -97,7 +97,8 @@ def list_bookmark(request: Request):
     }
     return Response(responseData)
 
-
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_bookmark(request: Request, bookmark_id):
     """ This endpoint for delete your bookmark """
@@ -196,21 +197,6 @@ def posted_articles_per_category(request: Request, category_id):
     return Response(dataResponse)
 
 @api_view(['GET'])
-def search_for_article(request: Request):
-    """ This endpoint for searching article by title  """
-    if request.method == 'GET':
-        article = Article.objects.all()
-        title = request.GET.get('title', None)
-        if title is not None:
-            search_s = Article.objects.filter(title__contains=title.lower())
-            search_article = {
-                "Article": ArticleSerializer(instance=search_s, many=True).data
-            }
-            return Response(search_article)
-    return Response("non")
-
-
-@api_view(['GET'])
 def top5_Article(request: Request):
     """ This endpoint for list the top 5 Articles by Likes """
     top = Article.objects.order_by('-likes')[:5]
@@ -219,3 +205,16 @@ def top5_Article(request: Request):
         "TOP_5": ArticleSerializer(instance=top, many=True).data
     }
     return Response(dataResponse)
+
+@api_view(['GET'])
+def search_for_article (request: Request, article_title):
+    """ This endpoint for searching article by title  """
+    search_article = Article.objects.filter(title__contains=article_title.lower())
+    article_info = ArticleSerializer(instance=search_article, many=True).data
+    if article_info:
+        dataResponse = {
+            "Article": article_info
+        }
+        return Response(dataResponse)
+    else:
+        return Response({"msg": "couldn't find the article"}, status=status.HTTP_400_BAD_REQUEST)
