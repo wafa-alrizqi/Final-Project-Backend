@@ -6,8 +6,17 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     '''This class for Category attributes '''
+    class CategoryTopic(models.TextChoices):
+        BUSINESS = 'business'
+        HEALTH = 'health'
+        SPORT = 'sport'
+        TECHNOLOGY = 'technology'
+        ECONOMY= 'economy'
+        ENTERTAINMENT = 'entertainment'
+        FOOD_DRINK = 'Food and drink'
 
-    title = models.CharField(max_length=128)
+
+    name = models.CharField(choices=CategoryTopic.choices, max_length=30)
     image = models.URLField()
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -38,7 +47,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class BookMarks(models.Model):
+class Bookmark(models.Model):
     ''' This class for BookMarks attributes '''
 
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
