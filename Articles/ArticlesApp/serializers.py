@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Article, Comment, BookMarks
+from .models import *
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -23,4 +23,10 @@ class CommentSerializer(serializers.ModelSerializer):
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookMarks
+        fields = '__all__'
+
+
+class Comment_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
         fields = '__all__'
