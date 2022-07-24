@@ -14,12 +14,11 @@ class Category(models.Model):
         ECONOMY= 'economy'
         ENTERTAINMENT = 'entertainment'
         FOOD_DRINK = 'Food and drink'
-
-
     name = models.CharField(choices=CategoryTopic.choices, max_length=30)
     image = models.URLField()
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    def __str__(self):
+        return self.name
 
 class Article(models.Model):
     ''' This class is for Articles attributes'''
@@ -33,14 +32,12 @@ class Article(models.Model):
     likes = models.IntegerField()
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def str(self):
+    def __str__(self):
         return self.title
 
 
 class Comment(models.Model):
     ''' This class for Comment attributes '''
-
     content = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,6 +46,5 @@ class Comment(models.Model):
 
 class Bookmark(models.Model):
     ''' This class for BookMarks attributes '''
-
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
