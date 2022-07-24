@@ -13,6 +13,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookmark

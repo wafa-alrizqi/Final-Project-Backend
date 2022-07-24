@@ -184,6 +184,7 @@ def posted_articles_per_publisher(request: Request, publisher_id):
     }
     return Response(dataResponse)
 
+
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 def posted_articles_per_category(request: Request, category_id):
@@ -194,6 +195,7 @@ def posted_articles_per_category(request: Request, category_id):
         'Articles': ArticleSerializer(instance=article, many=True).data
     }
     return Response(dataResponse)
+
 
 @api_view(['GET'])
 def search_for_article(request: Request):

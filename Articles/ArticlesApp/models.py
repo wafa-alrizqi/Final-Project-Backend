@@ -36,7 +36,7 @@ class Article(models.Model):
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
