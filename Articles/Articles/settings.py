@@ -77,21 +77,14 @@ WSGI_APPLICATION = 'Articles.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-<<<<<<< HEAD
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Articles',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-=======
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
 }
@@ -100,9 +93,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'MyArticleDB',
         'USER': 'postgres',
-        'PASSWORD': '123456789',
->>>>>>> d61a8488839897b2d8024b68a2cf21868c2b22ce
-        'HOST': 'localhost'
+        'PASSWORD': 'FA0534FA',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -143,7 +136,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
