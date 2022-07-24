@@ -33,8 +33,16 @@ http://127.0.0.1:8000/view_comment
 http://127.0.0.1:8000/delete_comment/<comment_id>/
 
 # Articles
+http://127.0.0.1:8000/add_article/
+http://127.0.0.1:8000/update_article/<article_id>/
+http://127.0.0.1:8000/delete_article/<article_id>/
+http://127.0.0.1:8000/posted_articles_per_publisher/<publisher_id>/
 http://127.0.0.1:8000/top5/
 http://127.0.0.1:8000/search/
+
+
+
+
 
 
 '''
