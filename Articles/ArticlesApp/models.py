@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 
-class Category (models.Model):
+class Category(models.Model):
     '''This class for Category attributes '''
 
     title = models.CharField(max_length=128)
@@ -11,7 +12,7 @@ class Category (models.Model):
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class Article (models.Model):
+class Article(models.Model):
     ''' This class is for Articles attributes'''
 
     title = models.CharField(max_length=128)
@@ -28,7 +29,7 @@ class Article (models.Model):
         return self.title
 
 
-class Comment (models.Model):
+class Comment(models.Model):
     ''' This class for Comment attributes '''
 
     content = models.TextField()
@@ -36,7 +37,8 @@ class Comment (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class BookMarks (models.Model):
+
+class BookMarks(models.Model):
     ''' This class for BookMarks attributes '''
 
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
