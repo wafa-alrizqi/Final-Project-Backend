@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,6 +77,7 @@ WSGI_APPLICATION = 'Articles.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+<<<<<<< HEAD
 
 DATABASES = {
     'default': {
@@ -83,10 +85,26 @@ DATABASES = {
         'NAME': 'Articles',
         'USER': 'postgres',
         'PASSWORD': '12345',
+=======
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'MyArticleDB',
+        'USER': 'postgres',
+        'PASSWORD': '123456789',
+>>>>>>> d61a8488839897b2d8024b68a2cf21868c2b22ce
         'HOST': 'localhost'
     }
 }
-
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
