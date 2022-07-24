@@ -12,3 +12,29 @@
     - py manage.py startapp Accounts
 
 '''
+
+
+'''
+
+# end points
+# Accounts:
+http://127.0.0.1:8000/register/
+http://127.0.0.1:8000/login
+
+# Book Marks
+http://127.0.0.1:8000/add_Bookmark/
+http://127.0.0.1:8000/all_Bookmark/
+http://127.0.0.1:8000/delete_Bookmark/<Bookmark_id>/
+
+
+# Comments
+http://127.0.0.1:8000/add_comment/
+http://127.0.0.1:8000/view_comment
+http://127.0.0.1:8000/delete_comment/<comment_id>/
+
+# Articles
+http://127.0.0.1:8000/top5/
+http://127.0.0.1:8000/search/
+
+
+'''
