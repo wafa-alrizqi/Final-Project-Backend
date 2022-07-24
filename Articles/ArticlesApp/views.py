@@ -101,6 +101,7 @@ def delete_bookmark(request: Request, bookmark_id):
 def add_article(request: Request):
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed!'}, status=status.HTTP_401_UNAUTHORIZED)
+    # request.data["publisher"]=request.user.id
     else:
         article = ArticleSerializer(data=request.data)
         if article.is_valid():
