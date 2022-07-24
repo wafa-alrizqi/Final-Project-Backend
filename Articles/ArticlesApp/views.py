@@ -9,8 +9,6 @@ from . import models
 from .serializers import *
 
 
-
-
 # comment views:
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
@@ -193,4 +191,3 @@ def top5_Article(request: Request):
         "TOP_5": ArticleSerializer(instance=top, many=True).data
     }
     return Response(dataResponse)
-

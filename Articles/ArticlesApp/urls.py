@@ -14,5 +14,11 @@ urlpatterns = [
     path("view_comment", views.view_comment, name="view_comment"),
     path("delete_comment/<comment_id>/", views.delete_comment, name="delete_comment"),
 
+    path('article/', views.add_article, name='article'),
+    path('all_articles/', views.all_articles, name='all_articles'),
+    path('update_article/<article_id>/', views.update_article, name='update_article'),
+    path('delete_article/<article_id>/', views.delete_article, name='delete_article'),
+    path('posted_articles_per_publisher/<publisher_id>/', views.posted_articles_per_publisher, name='posted_articles_per_publisher'),
+
 ]
 
