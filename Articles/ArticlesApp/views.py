@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-
 # Create your views here
 
 
@@ -17,6 +16,9 @@ from .serializers import *
 # Create your views her
 
 # comment views:
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def add_comment(request: Request, article_id):
     """this endpoint is to add a comment"""
     print(request.user)
@@ -51,12 +53,15 @@ def view_comment(request: Request):
 
     return Response(dataResponse)
 
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_comment(request: Request, comment_id):
     """this endpoint is for deleting a comment"""
     con = Comment.objects.get(id=comment_id)
     con.delete()
     return Response({"msg": "Deleted Successfully"})
-
 
 
 @api_view(['POST'])
@@ -75,7 +80,6 @@ def add_bookmark(request: Request):
     else:
         print(new_bookmark.errors)
         return Response("no", status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['GET'])
@@ -126,5 +130,3 @@ def top5_Article(request: Request):
         "TOP_5": ArticleSerializer(instance=top, many=True).data
     }
     return Response(dataResponse)
-
-
