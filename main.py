@@ -34,6 +34,7 @@
         http://127.0.0.1:8000/posted_articles_per_category/<category_id>/
         http://127.0.0.1:8000/top5/
         http://127.0.0.1:8000/search/
+        http://127.0.0.1:8000/article_details/<article_id>/
     
     # Category: 
         http://127.0.0.1:8000/all_categories/
