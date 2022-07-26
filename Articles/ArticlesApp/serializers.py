@@ -28,7 +28,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
 class Comment_serializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('content',)
 
 
 class FavouiteCatgorySerializer(serializers.ModelSerializer):
