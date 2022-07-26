@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Accounts',
     'ArticlesApp',
-    'rest_framework','corsheaders',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -94,6 +95,7 @@ DATABASES = {
         'NAME': 'Articles',
         'USER': 'postgres',
         'PASSWORD': 'bushra123',
+        # 'PASSWORD': 'FA0534FA',
         'HOST': 'localhost',
         'PORT': '5432',
     }

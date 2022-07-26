@@ -181,6 +181,17 @@ def all_articles(request: Request):
 
 
 @api_view(['GET'])
+def article_details(request: Request, article_id):
+    """ This endpoint is for listing/viewing all articles """
+    article = Article.objects.filter(id=article_id)
+    dataResponse = {
+        'msg': 'Article Details',
+        'Article': ArticleSerializer(instance=article, many=True).data
+    }
+    return Response(dataResponse)
+
+
+@api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 def posted_articles_per_publisher(request: Request):
     """ This endpoint is for viewing articles by a publisher """
