@@ -11,7 +11,7 @@ urlpatterns = [
     path("top5/", views.top5_Article, name="top5_Article"),
     path("search/<article_title>", views.search_for_article, name="search_for_article"),
 
-    path("add_comment/", views.add_comment, name="add_comment"),
+    path("add_comment/<article_id>/", views.add_comment, name="add_comment"),
     path("view_comment/<article_id>/", views.view_comment, name="view_comment"),
     path("delete_comment/<comment_id>/", views.delete_comment, name="delete_comment"),
 

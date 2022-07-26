@@ -12,7 +12,7 @@ from .serializers import *
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def add_comment(request: Request):
+def add_comment(request: Request, article_id):
     """this endpoint is to add a comment on an article"""
 
     print(request.user)
