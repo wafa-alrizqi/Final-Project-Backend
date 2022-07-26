@@ -121,7 +121,7 @@ def add_article(request: Request):
 
     else:
         article = ArticleSerializer(data=request.data)
-        request.data["publisher"] = request.user.id.username
+        request.data["publisher"] = request.user.id
         if article.is_valid():
             article.save()
             dataResponse = {
