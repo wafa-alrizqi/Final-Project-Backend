@@ -253,13 +253,13 @@ def top5_Article(request: Request):
     return Response(dataResponse)
 
 @api_view(['GET'])
-def search_for_article (request: Request, article_title):
+def search_for_article (request: Request):
     """ This endpoint for searching Article by title  """
     if request.method == 'GET':
         art =Article.objects.all()
         title = request.GET.get('title', None)
         if title is not None:
-            search_s = Article.objects.filter(title__contains=title.lower())
+            search_s = Article.objects.filter(title__icontains=title.lower())
             search_art = {
                 "Article": ArticleSerializer(instance=search_s, many=True).data
             }
