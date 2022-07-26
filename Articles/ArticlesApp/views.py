@@ -252,19 +252,19 @@ def top5_Article(request: Request):
     }
     return Response(dataResponse)
 
-
 @api_view(['GET'])
 def search_for_article (request: Request, article_title):
-    """ This endpoint for searching article by title  """
-    search_article = Article.objects.filter(title__contains=article_title.lower())
-    article_info = ArticleSerializer(instance=search_article, many=True).data
-    if article_info:
-        dataResponse = {
-            "Article": article_info
-        }
-        return Response(dataResponse)
-    else:
-        return Response({"msg": "couldn't find the article"}, status=status.HTTP_400_BAD_REQUEST)
+    """ This endpoint for searching Article by title  """
+    if request.method == 'GET':
+        art =Article.objects.all()
+        title = request.GET.get('title', None)
+        if title is not None:
+            search_s = Article.objects.filter(title__contains=title.lower())
+            search_art = {
+                "Article": ArticleSerializer(instance=search_s, many=True).data
+            }
+            return Response(search_art)
+    return Response("non")
 
 
 @api_view(['GET'])
