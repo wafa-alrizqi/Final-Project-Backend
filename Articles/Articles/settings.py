@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Accounts',
     'ArticlesApp',
-    'rest_framework','corsheaders',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -91,9 +92,15 @@ WSGI_APPLICATION = 'Articles.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MyArticleDB',
+        'NAME': 'Articles',
         'USER': 'postgres',
-        'PASSWORD': '123456789',
+
+        'PASSWORD': '12345',
+
+        'PASSWORD': 'bushra123',
+        # 'PASSWORD': 'FA0534FA',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 # DATABASES = {
