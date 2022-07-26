@@ -54,3 +54,10 @@ class Bookmark(models.Model):
 
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class FavouiteCatgory(models.Model):
+    """ This class for Favouite Catgory attributes """
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

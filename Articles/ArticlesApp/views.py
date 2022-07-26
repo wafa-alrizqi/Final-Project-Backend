@@ -134,6 +134,30 @@ def add_article(request: Request):
             return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+def add_ArticleLike(request: Request):
+    """ This endpoint is for adding a like for an article if the user is logged in"""
+
+    if not request.user.is_authenticated:
+        return Response({'msg': 'Not Allowed!'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    else:
+        add_like = ArticleLikesSerializer(data=request.data)
+        if add_like.is_valid():
+            add_like.save()
+            dataResponse = {
+                'msg': 'Article like Added Successfully',
+                'article': add_like.data
+            }
+            return Response(dataResponse)
+        else:
+            print(add_like.errors)
+            dataResponse = {'msg': 'Unable to add like article'}
+            return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_article(request: Request, article_id):
@@ -175,6 +199,17 @@ def all_articles(request: Request):
     article = Article.objects.all()
     dataResponse = {
         'msg': 'List of All Articles',
+        'Article': ArticleSerializer(instance=article, many=True).data
+    }
+    return Response(dataResponse)
+
+
+@api_view(['GET'])
+def article_details(request: Request, article_id):
+    """ This endpoint is for listing/viewing all articles """
+    article = Article.objects.filter(id=article_id)
+    dataResponse = {
+        'msg': 'Article Details',
         'Article': ArticleSerializer(instance=article, many=True).data
     }
     return Response(dataResponse)
@@ -239,3 +274,48 @@ def all_categories(request: Request):
     }
     return Response(dataResponse)
 
+
+
+# Favourite Category views:
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_favCategory(request: Request):
+    """ This endpoint for adding categories to the user's Favourite Category  """
+    if not request.user.is_authenticated:
+        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+
+    request.data["user"] = request.user.id
+    new_favCategory = FavouiteCatgorySerializer(data=request.data)
+    if new_favCategory.is_valid():
+        new_favCategory.save()
+        return Response({"Bookmark": new_favCategory.data})
+    else:
+        print(new_favCategory.errors)
+        return Response("Couldn't add", status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def list_favCategory(request: Request):
+    """ This endpoint for list all your Favouite Catgories  """
+    favCategory = FavouiteCatgory.objects.all()
+
+    responseData = {
+        "msg": " Favouite Catgories : ",
+        "Favouite Catgories": FavouiteCatgorySerializer(instance=favCategory, many=True).data
+    }
+    return Response(responseData)
+
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_favCategory(request: Request, favCategory_id):
+    """ This endpoint for delete your bookmark """
+    del_favCategory = FavouiteCatgory.objects.get(id=favCategory_id)
+    del_favCategory.delete()
+    return Response({"msg": "Deleted Successfully"})

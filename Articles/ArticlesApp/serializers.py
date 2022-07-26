@@ -7,6 +7,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = '__all__'
 
+class ArticleLikesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = 'likes'
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,3 +29,10 @@ class Comment_serializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+class FavouiteCatgorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavouiteCatgory
+        fields = '__all__'
+
