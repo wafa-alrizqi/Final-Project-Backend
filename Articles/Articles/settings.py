@@ -88,9 +88,13 @@ SIMPLE_JWT = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MyArticleDB',
+        'NAME': 'Articles',
         'USER': 'postgres',
-        'PASSWORD': 'FA0534FA',
+
+        'PASSWORD': '12345',
+
+        'PASSWORD': 'bushra123',
+        # 'PASSWORD': 'FA0534FA',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -141,3 +145,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+}

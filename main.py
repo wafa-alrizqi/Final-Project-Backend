@@ -35,8 +35,19 @@
         http://127.0.0.1:8000/top5/
         http://127.0.0.1:8000/search/
         http://127.0.0.1:8000/article_details/<article_id>/
+
+        http://127.0.0.1:8000/add_ArticleLike/<article_id>/
     
     # Category: 
         http://127.0.0.1:8000/all_categories/
+        
+        
+    # Favourite Category:
+    
+        http://127.0.0.1:8000/add_favCategory/
+        http://127.0.0.1:8000/list_favCategory/
+        http://127.0.0.1:8000/delete_favCategory/<bookmark_id>/
+    
+    
 
 '''
