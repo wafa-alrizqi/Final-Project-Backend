@@ -10,7 +10,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 class ArticleLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = 'likes'
+        fields = ('likes',)
 
 
 class CategorySerializer(serializers.ModelSerializer):

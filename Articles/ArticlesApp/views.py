@@ -120,7 +120,7 @@ def add_article(request: Request):
 
     else:
         article = ArticleSerializer(data=request.data)
-        request.data["publisher"] = request.user.id
+        request.data["publisher"] = request.user.id.username
         if article.is_valid():
             article.save()
             dataResponse = {
@@ -136,14 +136,15 @@ def add_article(request: Request):
 
 @api_view(['POST'])
 @authentication_classes([JWTAuthentication])
-def add_ArticleLike(request: Request):
+def add_ArticleLike(request: Request, article_id):
     """ This endpoint is for adding a like for an article if the user is logged in"""
 
     if not request.user.is_authenticated:
         return Response({'msg': 'Not Allowed!'}, status=status.HTTP_401_UNAUTHORIZED)
 
     else:
-        add_like = ArticleLikesSerializer(data=request.data)
+        article = Article.objects.get(id=article_id)
+        add_like = ArticleLikesSerializer(instance=article, data=request.data)
         if add_like.is_valid():
             add_like.save()
             dataResponse = {
