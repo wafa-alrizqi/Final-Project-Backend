@@ -250,3 +250,48 @@ def all_categories(request: Request):
     }
     return Response(dataResponse)
 
+
+
+# Favourite Category views:
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_favCategory(request: Request):
+    """ This endpoint for adding categories to the user's Favourite Category  """
+    if not request.user.is_authenticated:
+        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+
+    request.data["user"] = request.user.id
+    new_favCategory = FavouiteCatgorySerializer(data=request.data)
+    if new_favCategory.is_valid():
+        new_favCategory.save()
+        return Response({"Bookmark": new_favCategory.data})
+    else:
+        print(new_favCategory.errors)
+        return Response("Couldn't add", status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def list_favCategory(request: Request):
+    """ This endpoint for list all your Favouite Catgories  """
+    favCategory = FavouiteCatgory.objects.all()
+
+    responseData = {
+        "msg": " Favouite Catgories : ",
+        "Favouite Catgories": FavouiteCatgorySerializer(instance=favCategory, many=True).data
+    }
+    return Response(responseData)
+
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_favCategory(request: Request, favCategory_id):
+    """ This endpoint for delete your bookmark """
+    del_favCategory = FavouiteCatgory.objects.get(id=favCategory_id)
+    del_favCategory.delete()
+    return Response({"msg": "Deleted Successfully"})

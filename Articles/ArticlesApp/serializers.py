@@ -24,3 +24,10 @@ class Comment_serializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+class FavouiteCatgorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavouiteCatgory
+        fields = '__all__'
+
