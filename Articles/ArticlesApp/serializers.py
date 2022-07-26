@@ -24,6 +24,12 @@ class BookmarkSerializer(serializers.ModelSerializer):
         model = Bookmark
         fields = '__all__'
 
+class BookmarkArticlesSerializer(serializers.ModelSerializer):
+    article = ArticleSerializer()
+    class Meta:
+        model = Bookmark
+        fields = '__all__'
+
 
 class Comment_serializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='user.username')
@@ -38,3 +44,11 @@ class FavouiteCatgorySerializer(serializers.ModelSerializer):
         model = FavouiteCatgory
         fields = '__all__'
 
+
+
+class FavouiteCatgoriesSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    class Meta:
+        model = FavouiteCatgory
+        fields = '__all__'
+CategorySerializer

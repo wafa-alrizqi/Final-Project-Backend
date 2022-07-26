@@ -96,7 +96,7 @@ def list_bookmark(request: Request):
 
     responseData = {
         "msg": " Bookmark : ",
-        "Bookmark": BookmarkSerializer(instance=bookmark, many=True).data
+        "Bookmark": BookmarkArticlesSerializer(instance=bookmark, many=True).data
     }
     return Response(responseData)
 
@@ -306,7 +306,7 @@ def list_favCategory(request: Request):
 
     responseData = {
         "msg": " Favouite Catgories : ",
-        "Favouite Catgories": FavouiteCatgorySerializer(instance=favCategory, many=True).data
+        "Favouite Catgories": FavouiteCatgoriesSerializer(instance=favCategory, many=True).data
     }
     return Response(responseData)
 

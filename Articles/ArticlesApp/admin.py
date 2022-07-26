@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
-from .models import Article, Comment, Category, Bookmark
+from .models import Article, Comment, Category, Bookmark, FavouiteCatgory
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -25,3 +25,4 @@ admin.site.register(Article, ArticleAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Bookmark, BookmarkAdmin)
+admin.site.register(FavouiteCatgory)
