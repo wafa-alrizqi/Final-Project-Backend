@@ -17,6 +17,9 @@ urlpatterns = [
 
     path('add_article/', views.add_article, name='add_article'),
     path('all_articles/', views.all_articles, name='all_articles'),
+
+    path('article_details/<article_id>/', views.article_details, name='article_details'),
+
     path('update_article/<article_id>/', views.update_article, name='update_article'),
     path('delete_article/<article_id>/', views.delete_article, name='delete_article'),
     path('posted_articles_per_publisher/', views.posted_articles_per_publisher, name='posted_articles_per_publisher'),
