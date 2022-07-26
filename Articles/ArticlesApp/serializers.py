@@ -26,9 +26,11 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class Comment_serializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+
     class Meta:
         model = Comment
-        fields = ('content',)
+        fields = ['content', 'article', 'created_at', 'user', 'username']
 
 
 class FavouiteCatgorySerializer(serializers.ModelSerializer):

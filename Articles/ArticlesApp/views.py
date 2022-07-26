@@ -14,27 +14,26 @@ from .serializers import *
 @permission_classes([IsAuthenticated])
 def add_comment(request: Request, article_id):
     """this endpoint is to add a comment on an article"""
-
-    print(request.user)
-    if not request.user.is_authenticated or not request.user.has_perm('articles.add_comment'):
+    if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
-
-    request.data.update(user=request.user.id)
-
-    article = Comment.objects.get(article=article_id)
-
-    comment = Comment_serializer(instance = article,data=request.data)
-    if comment.is_valid():
-        comment.save()
-        dataResponse = {
-            "msg": "Created Successfully",
-            "comment": comment.data
-        }
-        return Response(dataResponse)
     else:
-        print(comment.errors)
-        dataResponse = {"msg": "couldn't create a comment"}
-        return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
+        comment = Comment_serializer(data=request.data)
+        request.data["article"] = article_id
+        request.data["user"] = request.user.id
+
+        if comment.is_valid():
+            print(request.user.username)
+            comment.save()
+            dataResponse = {
+                "msg": "Created Successfully",
+                "comment": comment.data
+            }
+            return Response(dataResponse)
+        else:
+            print(request.user.id)
+            print(comment.errors)
+            dataResponse = {'msg': 'Unable to Add Comment'}
+            return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -160,7 +159,6 @@ def add_ArticleLike(request: Request, article_id):
             return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_article(request: Request, article_id):
@@ -252,11 +250,12 @@ def top5_Article(request: Request):
     }
     return Response(dataResponse)
 
+
 @api_view(['GET'])
-def search_for_article (request: Request):
+def search_for_article(request: Request):
     """ This endpoint for searching Article by title  """
     if request.method == 'GET':
-        art =Article.objects.all()
+        art = Article.objects.all()
         title = request.GET.get('title', None)
         if title is not None:
             search_s = Article.objects.filter(title__icontains=title.lower())
@@ -278,9 +277,7 @@ def all_categories(request: Request):
     return Response(dataResponse)
 
 
-
 # Favourite Category views:
-
 
 
 @api_view(['POST'])
