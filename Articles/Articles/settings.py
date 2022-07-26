@@ -90,9 +90,9 @@ SIMPLE_JWT = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MyArticleDB',
+        'NAME': 'Articles',
         'USER': 'postgres',
-        'PASSWORD': 'FA0534FA',
+        'PASSWORD': '12345',
         'HOST': 'localhost',
         'PORT': '5432',
     }
