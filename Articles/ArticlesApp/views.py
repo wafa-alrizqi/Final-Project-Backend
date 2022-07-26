@@ -21,7 +21,7 @@ def add_comment(request: Request, article_id):
 
     request.data.update(user=request.user.id)
 
-    article = Article.objects.get(id=article_id)
+    article = Comment.objects.get(article=article_id)
 
     comment = Comment_serializer(instance = article,data=request.data)
     if comment.is_valid():
