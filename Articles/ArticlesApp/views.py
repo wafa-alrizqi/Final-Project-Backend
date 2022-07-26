@@ -134,6 +134,30 @@ def add_article(request: Request):
             return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+def add_ArticleLike(request: Request):
+    """ This endpoint is for adding a like for an article if the user is logged in"""
+
+    if not request.user.is_authenticated:
+        return Response({'msg': 'Not Allowed!'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    else:
+        add_like = ArticleLikesSerializer(data=request.data)
+        if add_like.is_valid():
+            add_like.save()
+            dataResponse = {
+                'msg': 'Article like Added Successfully',
+                'article': add_like.data
+            }
+            return Response(dataResponse)
+        else:
+            print(add_like.errors)
+            dataResponse = {'msg': 'Unable to add like article'}
+            return Response(dataResponse, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication])
 def update_article(request: Request, article_id):

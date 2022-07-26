@@ -25,6 +25,9 @@ urlpatterns = [
     path('posted_articles_per_publisher/', views.posted_articles_per_publisher, name='posted_articles_per_publisher'),
     path('posted_articles_per_category/<category_id>/', views.posted_articles_per_category, name='posted_articles_per_category'),
 
+    path('add_ArticleLike/', views.add_ArticleLike, name='add_ArticleLike'),
+
+
     path('all_categories/', views.all_categories, name='all_categories'),
 
     path("add_favCategory/", views.add_bookmark, name="add_bookmark"),
