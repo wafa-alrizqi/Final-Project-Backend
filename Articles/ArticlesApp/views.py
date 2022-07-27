@@ -113,21 +113,22 @@ def list_bookmark(request: Request):
 
 @api_view(['DELETE'])
 @authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def delete_bookmark(request: Request, bookmark_id):
     """ This endpoint for delete your bookmark """
     if not request.user.is_authenticated:
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
+        request.data.update(user=request.user.id)
         bookmark = Bookmark.objects.get(id=bookmark_id)
-        if bookmark.users.id == request.user.id:
+        if bookmark.user.id == request.user.id:
             bookmark.delete()
             return Response({"msg": "Deleted bookmark Successfully"})
         else:
             return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
     except:
         return Response({"msg": "Could not delete the bookmark not found "}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 
@@ -301,7 +302,7 @@ def all_categories(request: Request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 def add_favCategory(request: Request, category_id):
     """ This endpoint for adding categories to the user's Favourite Category  """
 
@@ -309,13 +310,13 @@ def add_favCategory(request: Request, category_id):
     request.data["user"] = request.user.id
     category_id = Category.objects.get(id=category_id)
 
-    if Bookmark.objects.filter(user=request.user.id, category=category_id).exists():
+    if FavouiteCatgory.objects.filter(user=request.user.id, category=category_id).exists():
         return Response({"msg": "you already have added this category"}, status=status.HTTP_400_BAD_REQUEST)
 
     user_request = User.objects.get(id=request.user.id)
 
     create_favCategory = FavouiteCatgory.objects.create(category=category_id, user=user_request)
-    new_favCategory = BookmarkSerializer.data
+    new_favCategory = FavouiteCatgoriesSerializer.data
 
     if new_favCategory.is_valid():
         new_favCategory.save()
@@ -350,8 +351,9 @@ def delete_favCategory(request: Request, favCategory_id):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
+        request.data.update(user=request.user.id)
         del_favCategory = FavouiteCatgory.objects.get(id=favCategory_id)
-        if del_favCategory.users.id == request.user.id:
+        if del_favCategory.user.id == request.user.id:
             del_favCategory.delete()
             return Response({"msg": "Deleted Favouite Catgory Successfully"})
         else:
