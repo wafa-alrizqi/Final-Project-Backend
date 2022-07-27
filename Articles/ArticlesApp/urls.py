@@ -32,7 +32,7 @@ urlpatterns = [
 
     path('all_categories/', views.all_categories, name='all_categories'),
 
-    path("add_favCategory/", views.add_favCategory, name="add_favCategory"),
+    path("add_favCategory/<category_id>/", views.add_favCategory, name="add_favCategory"),
     path("list_favCategory/", views.list_favCategory, name="list_favCategory"),
     path("delete_favCategory/<favCategory_id>/", views.delete_favCategory, name="delete_favCategory"),
 
