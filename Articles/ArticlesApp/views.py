@@ -215,7 +215,7 @@ def all_articles(request: Request):
     article = Article.objects.all()
     dataResponse = {
         'msg': 'List of All Articles',
-        'Article': ArticleSerializer(instance=article, many=True).data
+        'Article': ArticlePublisherSerializer(instance=article, many=True).data
     }
     return Response(dataResponse)
 
@@ -226,7 +226,7 @@ def article_details(request: Request, article_id):
     article = Article.objects.filter(id=article_id)
     dataResponse = {
         'msg': 'Article Details',
-        'Article': ArticleSerializer(instance=article, many=True).data
+        'Article': ArticlePublisherSerializer(instance=article, many=True).data
     }
     return Response(dataResponse)
 
