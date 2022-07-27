@@ -70,8 +70,10 @@ def delete_comment(request: Request, comment_id):
         return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+
+
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 def add_bookmark(request: Request, article_id):
     """ This endpoint for adding articles to the user's bookmark  """
     if not request.user.is_authenticated:
@@ -82,11 +84,14 @@ def add_bookmark(request: Request, article_id):
 
     if Bookmark.objects.filter(user=request.user.id, article=articleId).exists():
         return Response({"msg": "you already have added this article"}, status=status.HTTP_400_BAD_REQUEST)
-    request.data.update(user=request.user.id, article=articleId.id)
-    new_bookmark = BookmarkSerializer(data=request.data)
+    user_request = User.objects.get(id=request.user.id)
+
+    create_bookmark = Bookmark.objects.create(article=articleId,user=user_request)
+    new_bookmark=BookmarkSerializer.data
+
     if new_bookmark.is_valid():
         new_bookmark.save()
-        return Response({"Bookmark": new_bookmark.data})
+        return Response({"Bookmark": new_bookmark})
     else:
         print(new_bookmark.errors)
         return Response("Couldn't add to Bookmark", status=status.HTTP_400_BAD_REQUEST)
@@ -297,19 +302,27 @@ def all_categories(request: Request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def add_favCategory(request: Request):
+def add_favCategory(request: Request, category_id):
     """ This endpoint for adding categories to the user's Favourite Category  """
-    if not request.user.is_authenticated:
-        return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
+
 
     request.data["user"] = request.user.id
-    new_favCategory = FavouiteCatgorySerializer(data=request.data)
+    category_id = Category.objects.get(id=category_id)
+
+    if Bookmark.objects.filter(user=request.user.id, category=category_id).exists():
+        return Response({"msg": "you already have added this category"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user_request = User.objects.get(id=request.user.id)
+
+    create_favCategory = FavouiteCatgory.objects.create(category=category_id, user=user_request)
+    new_favCategory = BookmarkSerializer.data
+
     if new_favCategory.is_valid():
         new_favCategory.save()
-        return Response({"Favouites": new_favCategory.data})
+        return Response({"Favouites": new_favCategory})
     else:
         print(new_favCategory.errors)
-        return Response("Couldn't add", status=status.HTTP_400_BAD_REQUEST)
+        return Response("Couldn't add to Bookmark", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
