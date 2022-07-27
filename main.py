@@ -16,7 +16,7 @@
         http://127.0.0.1:8000/login/
     
     # Book Marks:
-        http://127.0.0.1:8000/add_bookmark/
+        http://127.0.0.1:8000/add_bookmark/<article_id>/
         http://127.0.0.1:8000/all_bookmark/
         http://127.0.0.1:8000/delete_bookmark/<bookmark_id>/
     

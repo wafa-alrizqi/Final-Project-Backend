@@ -4,7 +4,7 @@ from . import views
 app_name = "ArticlesApp"
 
 urlpatterns = [
-    path("add_bookmark/", views.add_bookmark, name="add_bookmark"),
+    path("add_bookmark/<article_id>/", views.add_bookmark, name="add_bookmark"),
     path("all_bookmark/", views.list_bookmark, name="list_bookmark"),
     path("delete_bookmark/<bookmark_id>/", views.delete_bookmark, name="delete_bookmark"),
     path("top5/", views.top5_Article, name="top5_Article"),

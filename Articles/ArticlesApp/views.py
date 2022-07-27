@@ -72,19 +72,24 @@ def delete_comment(request: Request, comment_id):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def add_bookmark(request: Request):
+def add_bookmark(request: Request, article_id):
     """ This endpoint for adding articles to the user's bookmark  """
     if not request.user.is_authenticated:
         return Response("Not Allowed", status=status.HTTP_400_BAD_REQUEST)
 
     request.data["user"] = request.user.id
+    articleId= Article.objects.get(id=article_id)
+
+    if Bookmark.objects.filter(user=request.user.id, article=articleId).exists():
+        return Response({"msg": "you already have added this article"}, status=status.HTTP_400_BAD_REQUEST)
+    request.data.update(user=request.user.id, article=articleId.id)
     new_bookmark = BookmarkSerializer(data=request.data)
     if new_bookmark.is_valid():
         new_bookmark.save()
         return Response({"Bookmark": new_bookmark.data})
     else:
         print(new_bookmark.errors)
-        return Response("Couldn't add", status=status.HTTP_400_BAD_REQUEST)
+        return Response("Couldn't add to Bookmark", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -92,8 +97,8 @@ def add_bookmark(request: Request):
 @permission_classes([IsAuthenticated])
 def list_bookmark(request: Request):
     """ This endpoint for list all your Bookmark  """
-    bookmark = Bookmark.objects.all()
-
+    bookmark = Bookmark.objects.filter(user=request.user.id)
+    print(request.user.id)
     responseData = {
         "msg": " Bookmark : ",
         "Bookmark": BookmarkArticlesSerializer(instance=bookmark, many=True).data
@@ -106,9 +111,19 @@ def list_bookmark(request: Request):
 @permission_classes([IsAuthenticated])
 def delete_bookmark(request: Request, bookmark_id):
     """ This endpoint for delete your bookmark """
-    bookmark = Bookmark.objects.get(id=bookmark_id)
-    bookmark.delete()
-    return Response({"msg": "Deleted Successfully"})
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        bookmark = Bookmark.objects.get(id=bookmark_id)
+        if bookmark.users.id == request.user.id:
+            bookmark.delete()
+            return Response({"msg": "Deleted bookmark Successfully"})
+        else:
+            return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+    except:
+        return Response({"msg": "Could not delete the bookmark not found "}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 @api_view(['POST'])
@@ -291,7 +306,7 @@ def add_favCategory(request: Request):
     new_favCategory = FavouiteCatgorySerializer(data=request.data)
     if new_favCategory.is_valid():
         new_favCategory.save()
-        return Response({"Bookmark": new_favCategory.data})
+        return Response({"Favouites": new_favCategory.data})
     else:
         print(new_favCategory.errors)
         return Response("Couldn't add", status=status.HTTP_400_BAD_REQUEST)
@@ -302,11 +317,12 @@ def add_favCategory(request: Request):
 @permission_classes([IsAuthenticated])
 def list_favCategory(request: Request):
     """ This endpoint for list all your Favouite Catgories  """
-    favCategory = FavouiteCatgory.objects.all()
 
+    favCategory = FavouiteCatgory.objects.filter(user=request.user.id)
+    print(request.user.id)
     responseData = {
-        "msg": " Favouite Catgories : ",
-        "Favouite Catgories": FavouiteCatgoriesSerializer(instance=favCategory, many=True).data
+        "msg": " Favouites : ",
+        "Favouites": FavouiteCatgoriesSerializer(instance=favCategory, many=True).data
     }
     return Response(responseData)
 
@@ -316,6 +332,16 @@ def list_favCategory(request: Request):
 @permission_classes([IsAuthenticated])
 def delete_favCategory(request: Request, favCategory_id):
     """ This endpoint for delete your bookmark """
-    del_favCategory = FavouiteCatgory.objects.get(id=favCategory_id)
-    del_favCategory.delete()
-    return Response({"msg": "Deleted Successfully"})
+
+    if not request.user.is_authenticated:
+        return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        del_favCategory = FavouiteCatgory.objects.get(id=favCategory_id)
+        if del_favCategory.users.id == request.user.id:
+            del_favCategory.delete()
+            return Response({"msg": "Deleted Favouite Catgory Successfully"})
+        else:
+            return Response({"msg": "Not Allowed"}, status=status.HTTP_401_UNAUTHORIZED)
+    except:
+        return Response({"msg": "Could not delete the Favouite Catgory not found "}, status=status.HTTP_404_NOT_FOUND)
